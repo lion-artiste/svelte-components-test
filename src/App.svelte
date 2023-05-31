@@ -28,7 +28,7 @@
 <main>
   <div>
     <h1>Waveform</h1>
-    <Waveform/>
+    <Waveform color="red"/>
   </div>
 
   <h1>Task</h1>

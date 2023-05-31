@@ -1,6 +1,6 @@
 <script lang="ts">
 import WaveSurfer from 'wavesurfer.js';
-import { onMount } from "svelte";
+import { onMount, onDestroy } from "svelte";
 
 let COLORS = ["blue", "red", "yellow", "green"];
 let colorsTable = {
@@ -32,7 +32,7 @@ function getRandomColor() {
   return COLORS[Math.floor(Math.random()*COLORS.length)];
 }
 
-export let playing = true;
+export let playing = false;
 export let color: typeof COLORS[number] = getRandomColor();
 export let audio = "https://webaudioapi.com/samples/metering/sounds/chrono.mp3";
 
@@ -58,6 +58,10 @@ onMount(() => {
 
   if (playing) wavesurfer.play();
 
+});
+
+onDestroy(() => {
+  wavesurfer.destroy();
 })
 
 </script>
