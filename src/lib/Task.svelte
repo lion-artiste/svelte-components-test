@@ -5,7 +5,7 @@ interface TASK {
 }
 
 export let task;
-export let state = "close";
+export let morePanel = false;
 </script>
 
 <div class="relative h-[80px] flex flex-row">
@@ -19,3 +19,4 @@ export let state = "close";
     <div class="">{task?.name}</div>
   </div>
 </div>
+<div></div>
