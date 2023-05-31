@@ -1,9 +1,8 @@
 <script lang="ts">
 import WaveSurfer from 'wavesurfer.js';
 import { onMount } from "svelte";
-import songFile from "/song_test.mp3"
 
-let COLORS = ["blue", "red", "yellow"];
+let COLORS = ["blue", "red", "yellow", "green"];
 let colorsTable = {
   "blue": {
     wave: "hsla(213, 76%, 55%, 1)",
@@ -19,6 +18,11 @@ let colorsTable = {
     wave: "hsla(48, 76%, 55%, 1)",
     progress: "hsla(48, 75%, 40%, 1)",
     background: "hsla(48, 76%, 90%, 1)"
+  },
+  "green": {
+    wave: "hsla(112, 76%, 55%, 1)",
+    progress: "hsla(112, 75%, 40%, 1)",
+    background: "hsla(112, 76%, 90%, 1)"
   }
 }
 
