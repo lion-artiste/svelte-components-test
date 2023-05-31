@@ -42,7 +42,7 @@ function taskMove(xValue) {
 </script>
 
 <!-- Main panel -->
-<div class="relative h-[80px] flex flex-row">
+<div class="relative h-[80px] flex flex-row shadow-inner">
 
   <!-- Backgrounds -->
   <div class:hidden={direction == "left"} class="w-full bg-yellow-500"></div>
