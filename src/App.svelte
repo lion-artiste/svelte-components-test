@@ -1,6 +1,11 @@
 <script lang="ts">
-  import Counter from './lib/Counter.svelte'
   import Waveform from './lib/Waveform.svelte'
+  import Task from './lib/Task.svelte'
+
+  let task = {
+    name: "Sortir la poubelle",
+    state: "started",
+  }
 </script>
 
 <main>
@@ -9,7 +14,8 @@
     <Waveform/>
   </div>
 
-  <div>The end</div>
+  <h1>Task</h1>
+  <Task task={task}/>
 </main>
 
 <style>
