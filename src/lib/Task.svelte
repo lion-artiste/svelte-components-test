@@ -3,6 +3,9 @@ import { writable } from "svelte/store";
 import { spring } from "svelte/motion";
 import { fly } from 'svelte/transition';
 import { createEventDispatcher } from "svelte";
+import { ArrowRightSquare } from 'lucide-svelte';
+import { Trash2 } from 'lucide-svelte';
+
 interface TASK {
   name: string,
 
@@ -10,6 +13,8 @@ interface TASK {
 
 export let task;
 export let morePanel = false;
+
+let taskWidth;
 
 let dispatch = createEventDispatcher();
 
@@ -20,38 +25,59 @@ let xMovement = spring(0);
 xMovement.stiffness = 0.3;
 xMovement.damping = 0.9;
 xMovement.precision = 0.005;
-$: xMovement.set((dragged) ? xMouseCurrent - xMouseDown : 0);
-
-let direction = "neutral";
-$: if (taskVisible && dragged) {
-  direction = (xMovement > 0) ? "right" : (xMovement < 0) ? "left" : "neutral";
-}
+$: xMovement.set((dragged) ? xMouseCurrent - xMouseDown : (taskVisible) ? 0 : $xMovement);
 
 let taskVisible = true;
+$: dragLimit = (taskWidth) ? Math.min(taskWidth/6, 150) : 150;
 
+function taskDown(xValue) {
+  dragged = true;
+  xMouseDown = xValue;
+  xMouseCurrent = xValue;
+}
 
 function taskMove(xValue) {
   if (!dragged) return;
   xMouseCurrent = xValue;
-  if (Math.abs($xMovement) > 200) {
+}
+
+function taskUp() {
+  dragged = false;
+  if (Math.abs($xMovement) > dragLimit) {
     taskVisible = false;
   }
-  if ($xMovement > 0) {direction = "right"}
-  else if ($xMovement < 0) {direction = "left"}
+}
+
+function dispatchEnd() {
+  if ($xMovement > 0) {
+    dispatch("reported",{task})
+  } else {
+    dispatch("deleted",{task})
+  }
 }
 </script>
 
 <!-- Main panel -->
-<div class="relative h-[80px] flex flex-row shadow-inner">
+<div bind:offsetWidth={taskWidth} class="relative h-[80px] flex flex-row shadow-inner select-none">
 
   <!-- Backgrounds -->
-  <div class:hidden={direction == "left"} class="w-full bg-yellow-500"></div>
-  <div class:hidden={direction == "right"} class="w-full bg-red-500"></div>
+  <div class:hidden={$xMovement < 0} class="w-full bg-yellow-400 flex flex-row items-center justify-start text-black">
+    <div class="flex flex-row items-center gap-x-2 transition-transform" class:scale-110={$xMovement > dragLimit}>
+      <ArrowRightSquare class="ml-4"/>
+      <div>Reporter</div>
+    </div>
+  </div>
+  <div class:hidden={$xMovement > 0} class="w-full bg-red-500 flex flex-row items-center justify-end text-white">
+    <div class="flex flex-row items-center gap-x-2 transition-transform" class:scale-110={$xMovement < -dragLimit}>
+      <div>Supprimer</div>
+      <Trash2 class="mr-4"/>
+    </div>
+  </div>
 
   <!-- Main task -->
   {#if taskVisible}
-  <div style:left={`${$xMovement}px`} class="bg-white absolute t-0 w-full h-full shadow-md" on:mousedown={(event) => {dragged = true;xMouseDown = event.clientX; xMouseCurrent = event.clientX;}} on:mousemove={(event) => {taskMove(event.clientX)}} on:mouseup={(event) => {dragged = false;}} transition:fly="{{ x: (direction == "left") ? -500 : 500, duration: 200 }}" on:outroend="{() => (direction == "right") ? dispatch("reported", {task}) : dispatch("deleted", {task})}">
-    <div class="">{task?.name}</div>
+  <div style:left={`${$xMovement}px`} class="bg-white absolute t-0 w-full h-full shadow-md flex flex-col items-center justify-center cursor-pointer" on:mousedown={(event) => {taskDown(event.clientX)}} on:mousemove={(event) => {taskMove(event.clientX)}} on:mouseup={taskUp} transition:fly="{{ x: ($xMovement < 0) ? -500 : 500, duration: 200 }}" on:outroend="{dispatchEnd}">
+    <div class="text-xl">{task?.name}</div>
   </div>
   {/if}
 </div>
