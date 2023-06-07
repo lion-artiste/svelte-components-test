@@ -7,7 +7,8 @@
   export let notes = [];
   export let height: number = 120;
   export let type: "melody" | "rhythm" | "pitch" = "melody";
-  export let debug: boolean = false;
+  export let debug: boolean = true;
+  export let key: "C" | "C#" | "D" | "Eb" | "E" | "F" | "F#" | "G" | "Ab" | "A" | "Bb" | "B" = "C";
 
   let renderer;
   let container: HTMLElement;

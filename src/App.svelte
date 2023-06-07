@@ -7,11 +7,13 @@
   let tasks = [{
       name: "Sortir la poubelle",
       open: true,
-      id: 1
+      id: 1,
+      date: new Date()
     },{
       name: "Laver le chien",
       open: true,
-      id: 2
+      id: 2,
+      date: new Date()
     }
   ];
 
@@ -36,8 +38,14 @@
 <main class="flex flex-col gap-y-10 items-stretch">
   <div>
     <h1>Waveform</h1>
-    <div>
-      <Waveform color="red"/>
+    <div class="flex flex-col items-stretch gap-y-3">
+    <div class="h-[300px]">
+      <Waveform id=1 audio="https://webaudioapi.com/samples/metering/sounds/chrono.mp3" on:play={(event) => console.log(event.detail)} on:stop={(event) => console.log(event.detail)}/>
+    </div>
+      <Waveform id=2/>
+      <div class="h-[50px]">
+      <Waveform id=3 audio="https://webaudioapi.com/samples/metering/sounds/chrono.mp3"/>
+      </div>
     </div>
   </div>
 

@@ -24,7 +24,10 @@
     "vite": "^4.3.9"
   },
   "dependencies": {
+    "konva": "^9.2.0",
     "lucide-svelte": "^0.236.0",
+    "peaks.js": "^2.1.0",
+    "uuid": "^9.0.0",
     "vexflow": "^4.1.0",
     "wavesurfer.js": "^7.0.0-beta.5"
   }
