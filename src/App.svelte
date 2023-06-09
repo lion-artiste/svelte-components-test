@@ -2,6 +2,7 @@
   import Waveform from './lib/Waveform.svelte';
   import TaskList from './lib/TaskList.svelte';
   import MusicSheet from './lib/MusicSheet.svelte';
+  import TonePlayer from "./lib/TonePlayer.svelte";
   import Steps from './lib/Steps.svelte';
   import { flip } from 'svelte/animate';
 
@@ -48,7 +49,18 @@
   <div>
     <h1>Slides</h1>
     <div class="h-[300px]">
-    <Steps/>
+    <Steps>
+
+        <svelte:fragment slot="step1">
+          <div>Choisissez votre date de naissance :</div>
+          <input type="date" class="input input-sm text-black">
+        </svelte:fragment>
+
+        <svelte:fragment slot="step2">
+          <input class="input input-sm text-black" type="text" id="name" name="name" required minlength="4" maxlength="8" size="10">
+          <input class="input input-sm text-black" type="text" id="name" name="name" required minlength="4" maxlength="8" size="10">
+        </svelte:fragment>
+    </Steps>
     </div>
   </div>
   <div>
@@ -67,6 +79,11 @@
   <div>
     <h1>Tasks</h1>
     <TaskList tasks={tasks} on:deleted={(event) => console.log(event.detail)}/>
+  </div>
+
+  <div>
+    <h1>Tone Player</h1>
+    <TonePlayer/>
   </div>
 
   <div>

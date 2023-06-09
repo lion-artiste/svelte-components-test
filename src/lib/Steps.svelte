@@ -1,54 +1,55 @@
 <script lang="ts">
   import {tweened} from "svelte/motion";
   import { cubicOut } from 'svelte/easing';
-  let nbSteps = 2;
+  import Step from './Step.svelte';
+  let nbSteps = Object.keys($$slots).length;
   let curStep = 1;
-  export let bgColor = "#cc0000";
+
+  export let progressBar = true;
+  export let bgColor = "multi";
+  let COLORS = ["#177e89", "#084c61","#db3a34","#ffc857","#323031"]
+  let curColor = 0;
+  const getColor = () => {
+    let color = COLORS[curColor];
+    curColor = (curColor + 1) % COLORS.length;
+    return color;
+  }
 
   let width;
 
-  let progressWidth = tweened(0, {
-		duration: 300,
+  let progressWidth = tweened((curStep) / (nbSteps) * 100, {
+		duration: 400,
 		easing: cubicOut
 	});
-  $: if (width) progressWidth.set((curStep) / (nbSteps) * width);
+  $: if(curStep && nbSteps) progressWidth.set((curStep) / (nbSteps) * 100);
 
   function next() {
-    curStep = (curStep + 1) % nbSteps
+    if (curStep < nbSteps) curStep = curStep + 1;
   }
 
-  function prec() {
-    curStep = (curStep == 0) ? nbSteps - 1 : curStep - 1;
+  function prev() {
+    if (curStep > 1) curStep = curStep - 1;
   }
 </script>
 
 <div class="h-full w-full overflow-hidden" style:background-color={bgColor} bind:offsetWidth={width}>
 
-  <div class="w-full h-full absolute top-0 left-0 transition-left bg-green-500 flex flex-row gap-x-10" style:left={(curStep <= 1) ? "0px" : `-${width}px`}>
-    <div class="grow cursor-pointer" on:click={prec}></div>
-    <div class="flex flex-col justify-center gap-y-10">
-      <div class="grow"></div>
-      <div class="flex flex-col items-center justify-center gap-y-3">
-        <input class="input" type="text" id="name" name="name" required minlength="4" maxlength="8" size="10">
-        <input class="input" type="text" id="name" name="name" required minlength="4" maxlength="8" size="10">
-      </div>
-      <div class="grow"></div>
-    </div>
-    <div class="grow cursor-pointer" on:click={next}></div>
-  </div>
+  {#if $$slots.step2}
+  <Step pos={(curStep > 2) ? "left" : (curStep < 2) ? "right" : "center"} bgColor={(bgColor == "multi") ? getColor() : bgColor} on:next={next} on:prev={prev}>
+    <slot name="step2"></slot>
+  </Step>
+  {/if}
 
-  <div class="w-full h-full absolute transition-left bg-blue-500 flex flex-col items-center justify-center gap-y-1" style:left={(curStep == 0) ? "0px" : `-${width}px`}>
-    <button on:click={() => next()}>Passer au suivant</button>
-  </div>
+  {#if $$slots.step1}
+  <Step pos={(curStep > 1) ? "left" : (curStep < 1) ? "right" : "center"} bgColor={(bgColor == "multi") ? getColor() : bgColor} on:next={next} on:prev={prev}>
+    <slot name="step1"></slot>
+  </Step>
+  {/if}
 
-  <div class="absolute bottom-0 left-0 w-full h-[5px] bg-transparent z-10">
-    <div class="h-full bg-white absolute left-0" style:width={`${$progressWidth}px`}></div>
+  {#if progressBar}
+  <div class="absolute z-10 h-[4px] w-full bottom-0 left-0 bg-black/20">
+    <div class="bg-white absolute left-0 top-0 h-full" style:width={`${$progressWidth}%`}></div>
   </div>
+  {/if}
 
 </div>
-
-<style>
-.transition-left {
-  transition: left 0.3s ease-out;
-}
-</style>
