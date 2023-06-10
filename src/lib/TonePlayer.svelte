@@ -88,22 +88,24 @@
   }
 </script>
 
-<div>
-  <div class="flex flex-col items-center justify-center gap-y-2">
+<div class="grid h-full w-full bg-slate-600 container grid-rows-2 grid-cols-4">
 
-    <div class="join">
-      <button on:click={decreasePitch} class="btn btn-primary join-item text-white"><Minus size=16/></button>
-      <div on:click={() => isPlaying = !isPlaying} class="btn btn join-item w-[80px] text-lg">{noteName}</div>
-      <button on:click={increasePitch} class="btn btn-primary join-item text-white" ><Plus size=16/></button>
-    </div>
-
-    {#if display !== "compact"}
-    <button class="btn btn-circle btn-primary" on:click={() => isPlaying = !isPlaying}>
-      {#if isPlaying}<Square/>{:else}<Play/>{/if}
-    </button>
+  <!-- Play button -->
+  <button class="col-start-1 col-end-3 row-start-1 row-end-3 text-white flex flex-col items-center justify-center hover:bg-slate-700" on:click={() => isPlaying = !isPlaying}>
+    {#if isPlaying}
+    <Square size=40/>
+    {:else}
+    <Play size=40/>
     {/if}
-  </div>
+  </button>
 
-  <div>
-  </div>
+  <!-- Note display -->
+  <div class="col-start-3 col-end-5 row-start-1 row-end-2 flex flex-col justify-center items-center text-white bg-slate-800 text-xl">{noteName}</div>
+
+  <!-- Buttons -->
+  <button class="col-start-3 col-end-4 row-start-2 row-end-3 text-white flex flex-col items-center justify-center border-l-2 border-l-slate-700 hover:bg-slate-700" on:click={decreasePitch}><Minus/></button>
+  <button class="col-start-4 col-end-5 row-start-2 row-end-3 text-white flex flex-col items-center justify-center border-l-2 border-l-slate-700 hover:bg-slate-700" on:click={increasePitch}><Plus/></button>
 </div>
+
+<style lang="postcss">
+</style>

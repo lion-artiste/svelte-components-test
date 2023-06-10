@@ -4,6 +4,7 @@
   import MusicSheet from './lib/MusicSheet.svelte';
   import TonePlayer from "./lib/TonePlayer.svelte";
   import Steps from './lib/Steps.svelte';
+  import Metronome from './lib/Metronome.svelte';
   import { flip } from 'svelte/animate';
 
   let tasks = [{
@@ -81,9 +82,14 @@
     <TaskList tasks={tasks} on:deleted={(event) => console.log(event.detail)}/>
   </div>
 
-  <div>
     <h1>Tone Player</h1>
+  <div class="h-[100px] w-[200px] self-center">
     <TonePlayer/>
+  </div>
+
+  <h1>Metronome</h1>
+  <div class="h-[200px] w-[300px] self-center">
+    <Metronome/>
   </div>
 
   <div>
