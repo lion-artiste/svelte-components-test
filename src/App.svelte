@@ -5,6 +5,7 @@
   import TonePlayer from "./lib/TonePlayer.svelte";
   import Steps from './lib/Steps.svelte';
   import Metronome from './lib/Metronome.svelte';
+  import Rating from "./lib/Rating.svelte";
   import { flip } from 'svelte/animate';
 
   let tasks = [{
@@ -54,12 +55,12 @@
 
         <svelte:fragment slot="step1">
           <div>Choisissez votre date de naissance :</div>
-          <input type="date" class="input input-sm text-black">
+          <Rating on:change={(event) => console.log(event.detail)}/>
         </svelte:fragment>
 
         <svelte:fragment slot="step2">
           <input class="input input-sm text-black" type="text" id="name" name="name" required minlength="4" maxlength="8" size="10">
-          <input class="input input-sm text-black" type="text" id="name" name="name" required minlength="4" maxlength="8" size="10">
+          <input type="date" class="input input-sm text-black">
         </svelte:fragment>
     </Steps>
     </div>

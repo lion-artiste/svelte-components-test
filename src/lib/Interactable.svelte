@@ -7,7 +7,7 @@
   let startY = null;
   let dispatch = createEventDispatcher();
   let el;
-  export let bgColor = "transparent";
+  export let bgColor = null;
 
   function handleStart(pos) {
       startX = pos.clientX;
@@ -52,6 +52,7 @@
     }
 
     if (Math.abs(deltaX) > Math.abs(deltaY)) {
+      dispatch("swipeX");
       // Horizontal swipe detected
       if (deltaX > 0) {
         dispatch('swipeRight');
@@ -59,6 +60,7 @@
         dispatch('swipeLeft');
       }
     } else {
+      dispatch("swipeY");
       if (deltaY > 0) {
         dispatch('swipeUp');
       } else {
